@@ -119,7 +119,7 @@ window.addEventListener("popstate", function(ev) {
             if (ev.state.extras == 'loc-link') {
                 $('#loc-link').addClass('active');
             } 
-            $('.tab[data-slide-to="' + ev.state.target + '"').each(function() {
+            $('.tab[data-slide-to="' + ev.state.target + '"]').each(function() {
                 $(this).addClass('active');
             });
         }
@@ -130,7 +130,7 @@ window.addEventListener("popstate", function(ev) {
             $('.toggler').each(function() {
                 $(this).removeClass('active');
             });
-            $('.tab-small[data-show="' + ev.state.target + '"').each(function() {
+            $('.tab-small[data-show="' + ev.state.target + '"]').each(function() {
                 $(this).addClass('active');
             });
         }

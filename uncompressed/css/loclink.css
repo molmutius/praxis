@@ -1,0 +1,22 @@
+/** 
+ * Have it extra, cssmin will destroy it otherwise. Don't forget to concat.
+ */
+.loc-link h5 {
+    font-size: 13px;
+    letter-spacing: 1px;
+    height: 74px;
+    margin: 0;
+    padding: 0;
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    display: box;
+    box-pack: center;
+    box-align: center;
+}
