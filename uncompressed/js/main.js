@@ -13,9 +13,9 @@ $(".tab").click(function(){
         // add to history
         var target = $(this).attr('data-slide-to');
         if (this.id == 'leistung') {
-            history.pushState({target: '0', source: 'toggler'}, null, null);
+            if (window.history && window.history.pushState) history.pushState({target: '0', source: 'toggler'}, null, null);
         } else if (target !== undefined) {
-            history.pushState({target: target, source: 'tab'}, null, null);
+            if (window.history && window.history.pushState) history.pushState({target: target, source: 'tab'}, null, null);
         }
     }
 });
@@ -32,7 +32,7 @@ $(".tab-small").click(function(){
 
 $(".loc-link").click(function(){
     var target = $(this).attr('data-slide-to');
-    history.pushState({target: target, source: 'tab', extras: 'loc-link'}, null, null);
+    if (window.history && window.history.pushState) history.pushState({target: target, source: 'tab', extras: 'loc-link'}, null, null);
 });
 
 /**
@@ -84,7 +84,7 @@ $('.toggler').click(function() {
         toggle(target);
         // add to history
         if (target !== undefined) {
-            history.pushState({target: target, source: 'toggler'}, null, null);
+            if (window.history && window.history.pushState) history.pushState({target: target, source: 'toggler'}, null, null);
         }
     }
 });
@@ -106,37 +106,39 @@ var toggleLeistung = function() {
 /**
  * History controller
  */
-history.pushState({target: '0', source: 'init'}, null, null); // the initial state when page is loaded
-window.addEventListener("popstate", function(ev) {
-    if(ev.state != null) {
-        // big tabs
-        if (ev.state.target != null && (ev.state.source == 'tab' || ev.state.source == 'init')) {
-            $('#content-slider').carousel(parseInt(ev.state.target));
-            $('#loc-link').removeClass('active');
-            $('.tab').each(function() {
-                $(this).removeClass('active');
-            });
-            if (ev.state.extras == 'loc-link') {
-                $('#loc-link').addClass('active');
-            } 
-            $('.tab[data-slide-to="' + ev.state.target + '"]').each(function() {
-                $(this).addClass('active');
-            });
+if (window.history && window.history.pushState) {
+    history.pushState({target: '0', source: 'init'}, null, null); // the initial state when page is loaded
+    window.addEventListener("popstate", function(ev) {
+        if(ev.state != null) {
+            // big tabs
+            if (ev.state.target != null && (ev.state.source == 'tab' || ev.state.source == 'init')) {
+                $('#content-slider').carousel(parseInt(ev.state.target));
+                $('#loc-link').removeClass('active');
+                $('.tab').each(function() {
+                    $(this).removeClass('active');
+                });
+                if (ev.state.extras == 'loc-link') {
+                    $('#loc-link').addClass('active');
+                } 
+                $('.tab[data-slide-to="' + ev.state.target + '"]').each(function() {
+                    $(this).addClass('active');
+                });
+            }
+            // small tabs
+            if (ev.state.target != null && ev.state.source == 'toggler') {
+                toggleLeistung();
+                toggle(ev.state.target);
+                $('.toggler').each(function() {
+                    $(this).removeClass('active');
+                });
+                $('.tab-small[data-show="' + ev.state.target + '"]').each(function() {
+                    $(this).addClass('active');
+                });
+            }
+        } else {
+            window.history.back(); // don't override the browser's behavior
         }
-        // small tabs
-        if (ev.state.target != null && ev.state.source == 'toggler') {
-            toggleLeistung();
-            toggle(ev.state.target);
-            $('.toggler').each(function() {
-                $(this).removeClass('active');
-            });
-            $('.tab-small[data-show="' + ev.state.target + '"]').each(function() {
-                $(this).addClass('active');
-            });
-        }
-    } else {
-        window.history.back(); // don't override the browser's behavior
-    }
-});
+    });
+};
 
 }); // document ready
