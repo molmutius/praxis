@@ -52,6 +52,9 @@ module.exports = function(grunt) {
 
   });
 
+  // default task which executes every sub-step
+  grunt.registerTask('default', ['uglify', 'cssmin', 'concat', 'htmlmin']);
+
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
